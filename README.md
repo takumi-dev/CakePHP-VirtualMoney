@@ -13,8 +13,8 @@ which provide features of management of money to your website.
 - create Test case.
 
 ## Requirements ##
-CakePHP 2.x
-PHP >= 5.2.6
+* CakePHP 2.x
+* PHP >= 5.2.6
 
 ## LICENCE ##
 The MIT License (MIT)
@@ -23,10 +23,10 @@ See details
 http://opensource.org/licenses/MIT
 
 ## Installation ##
-Download this: https://github.com/takumi-dev/CakePHP-VirtualMoney/tree/master
-Unzip that download.
-Copy the resulting folder to app/Plugin
-Rename the folder you just copied to VirtualMoney
+* Download this: https://github.com/takumi-dev/CakePHP-VirtualMoney/tree/master
+* Unzip that download.
+* Copy the resulting folder to app/Plugin
+* Rename the folder you just copied to VirtualMoney
 
 1. run
 
