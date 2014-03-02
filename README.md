@@ -211,13 +211,13 @@ class YourController extends AppController {
 
 
 ## Event APIs ##
-VirtualModel
+### VirtualModel
 * VirtualModel.afterSave   - on afterSave:   array('id' => $id, 'data' => $data, 'created' => $created)
 * VirtualModel.afterDelete - on afterDelete: array('id' => $id, 'data' => $data)
 * VirtualModel.beforeCashback - before append cashback request: array('money' => $dataForVirtualModel, 'cashback' => $dataForCashbackRequest)
 
 ====================
-CashbackRequest
+### CashbackRequest
 * CashbackRequest.afterSave   - on afterSave:   array('id' => $id, 'data' => $data, 'created' => $created)
 * CashbackRequest.afterDelete - on afterDelete: array('id' => $id, 'data' => $data)
 
