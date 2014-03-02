@@ -108,10 +108,10 @@ class CashbackRequest extends VirtualMoneyAppModel {
         }
         
 		$data = Hash::merge(array(
-            $this->alias => array('processed' => date('Y-m-d H:i:s'))
+            $this->alias => array('id' => $id, 'processed' => date('Y-m-d H:i:s'))
         ), $data);
 		
         $this->id = $id;
-		return (bool)$this->save($data, array('fieldList' => array($this->alias => array('processed', 'description', 'extra'))));
+		return (bool)$this->saveAll($data, array('validate' => true, 'fieldList' => array($this->alias => array('processed', 'description', 'extra'))));
 	}
 }

@@ -28,18 +28,7 @@ http://opensource.org/licenses/MIT
 * Copy the resulting folder to app/Plugin
 * Rename the folder you just copied to VirtualMoney
 
-1. run
-
-    Console/cake schema create --plugin VirtualMoney
-
-or
-
-    run SQL in Config/Schema/schema.sql
-
-(Remember to add your table prefix)
-
-
-2. just add following code on your bootstrap.php
+1. just add following code on your bootstrap.php
 
 ```php
 CakePlugin::load('VirtualMoney');
@@ -48,6 +37,17 @@ or
 ```php
 CakePlugin::loadAll();
 ```
+
+2. run
+```shell
+    Console/cake schema create --plugin VirtualMoney
+```
+or
+
+    run SQL in Config/Schema/schema.sql
+
+(Remember to add your table prefix)
+
 
 ## Usage ##
 Extend model of this plugin, or directly use it.

@@ -118,7 +118,7 @@ class VirtualMoneyAppModel extends AppModel {
             'model' => $model,
             'foreign_key' => $foreign_key,
         );
-        $order = array($this->alias.'.'.$this->primaryKey => 'DESC');
+        $order = array($this->alias.'.created' => 'DESC');
         $query = Hash::merge(compact('order', 'conditions'), $extraQuery);
         
         return $this->find('first', $query);
@@ -129,18 +129,23 @@ class VirtualMoneyAppModel extends AppModel {
 	 *
 	 * @param string $model
      * @param string $foreign_key
-     * @param array  $extraQuery
+     * @param array  $extraConditions
 	 * @return double sum of price with belongsTo $model, $foreign_key
 	 */
-    public function sum($model, $foreign_key, $extraQuery = array())
+    public function sum($model, $foreign_key, $extraConditions = array())
     {
         $conditions = array(
             'model' => $model,
             'foreign_key' => $foreign_key,
         );
+        if( isset($extraConditions['conditions']) )
+        {
+            $extraConditions = $extraConditions['conditions'];
+        }
+        $conditions = Hash::merge($conditions, $extraConditions);
         $contain = false;
         $fields  = array('id', 'price');
-        $query = Hash::merge(compact('conditions', 'contain', 'fields'), $extraQuery);
+        $query = compact('conditions', 'contain', 'fields');
         
         $data = $this->find('all', $query);
         if( !empty($data) )
@@ -188,6 +193,10 @@ class VirtualMoneyAppModel extends AppModel {
         );
         
         if( isset($options['saveMethod']) && $options['saveMethod'] !== 'saveAll' ){
+            if( !method_exists($this, $options['saveMethod']) )
+            {
+                throw new BadMethodCallException();
+            }
             return call_user_func_array(array($this, $options['saveMethod']), array($data, Hash::merge(compact('fieldList'), $options)));
         }else{
             return $this->saveAll($data, Hash::merge(compact('fieldList'), $options));
@@ -233,7 +242,16 @@ class VirtualMoneyAppModel extends AppModel {
                 {
                     if( isset(${$var}['hour']) )
                     {
-                        ${$var} = String::insert(':year-:month-:day :hour\::min\:second', ${$var});
+                        $_day = sprintf('%04d-%02d-%02d', ${$var}['year'], ${$var}['month'], ${$var}['day']);
+                        unset(${$var}['year'], ${$var}['month'], ${$var}['day']);
+                        ${$var} = array_values(${$var});
+                        if( count(${$var}) > 2 )
+                        {
+                            $_time = sprintf('%02d:%02d:%02d', ${$var}[0], ${$var}[1], ${$var}[2]);
+                        }else{
+                            $_time = sprintf('%02d:%02d:00', ${$var}[0], ${$var}[1]);
+                        }
+                        ${$var} = $_day.' '.$_time;
                     }else{
                         ${$var} = implode('-', ${$var});
                     }
@@ -255,10 +273,15 @@ class VirtualMoneyAppModel extends AppModel {
             }
         }
         
-		$conditions = array(
-			$this->alias.'.created >=' => $start,
-			$this->alias.'.created <=' => $end,
-		);
+        $conditions = array();
+        if( isset($start) )
+        {
+            $conditions[$this->alias.'.created >='] = $start;
+        }
+        if( isset($end) )
+        {
+            $conditions[$this->alias.'.created <='] = $end;
+        }
         
 		return compact('conditions');
 	}

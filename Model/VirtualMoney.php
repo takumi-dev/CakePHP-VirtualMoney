@@ -9,7 +9,7 @@ App::uses('CakeEvent', 'Event');
 App::uses('VirtualMoneyAppModel', 'VirtualMoney.Model');
 class VirtualMoney extends VirtualMoneyAppModel {
 	var $displayField = 'price';
-	var $order = array('id' => 'DESC');
+	var $order = array('created' => 'DESC');
     
 	var $actsAs = array(
 		'Containable',
@@ -158,7 +158,7 @@ class VirtualMoney extends VirtualMoneyAppModel {
         }
         
         $forThis = array($this->alias => array('model' => $model, 'foreign_key' => $foreign_key, 'price' => -1.0 * (double)$price));
-        $forCashback = array($this->alias => compact('model', 'foreign_key', 'price'));
+        $forCashback = array('CashbackRequest' => compact('model', 'foreign_key', 'price'));
         
         //dispath event. you can overwrite saveOptions, and data.
         $event = new CakeEvent('VirtualMoney.beforeCashback', $this, array(
@@ -184,7 +184,7 @@ class VirtualMoney extends VirtualMoneyAppModel {
         
         //database call
         $db = $this->getDatasource();
-        $db->beginTransaction();
+        $db->begin();
         $requestModel = $this->_getCashbackModel();
         
         if( $this->appendMany($forThis, Hash::merge($optionsForThis, array('atomic' => false))) )
