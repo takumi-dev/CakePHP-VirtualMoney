@@ -10,7 +10,6 @@ which provide features of management of money to your website.
 
 ## TODO ##
 - add default admin panel.
-- create Test case.
 
 ## Requirements ##
 * CakePHP 2.x
