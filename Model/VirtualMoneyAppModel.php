@@ -195,6 +195,22 @@ class VirtualMoneyAppModel extends AppModel {
     }
     
     /**
+	 * findQueryForBelongsTo - find query belongsTo $model, $foreign_key
+	 *
+	 * @param string $model
+     * @param string $foreign_key
+	 * @return array $query
+	 */
+    public function findQueryForBelongsTo($model, $foreign_key)
+    {
+        $conditions = array(
+            'model' => $model,
+            'foreign_key' => $foreign_key,
+        );
+        return compact('conditions');
+    }
+    
+    /**
 	 * findQueryForDatetime - find query for created
 	 *
 	 * @param string|array $start = null
